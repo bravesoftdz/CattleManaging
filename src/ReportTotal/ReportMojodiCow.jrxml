@@ -1,0 +1,1182 @@
+<?xml version="1.0" encoding="UTF-8"  ?>
+<!-- Created with iReport - A designer for JasperReports -->
+<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport
+		 name="ReportMojodiCow"
+		 columnCount="1"
+		 printOrder="Vertical"
+		 orientation="Landscape"
+		 pageWidth="842"
+		 pageHeight="595"
+		 columnWidth="782"
+		 columnSpacing="0"
+		 leftMargin="30"
+		 rightMargin="30"
+		 topMargin="20"
+		 bottomMargin="20"
+		 whenNoDataType="NoPages"
+		 isTitleNewPage="false"
+		 isSummaryNewPage="false">
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<parameter name="startDay" isForPrompting="true" class="java.util.Date"/>
+	<queryString><![CDATA[select
+   (select count(*) from c_property cp where cp.active = 1 )as totalDam,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('ماده')) as tatalMade,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('نر')) as totalNar,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('ماده') and cp.dore = 1) as totalMadeYek,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('ماده') and cp.dore = 2) as totalMadedo,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('ماده') and cp.dore = 3) as totalMadese,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('ماده') and cp.dore = 5) as totalMadetelise,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('ماده') and cp.dore = 6) as totalShekamDovom,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('ماده') and cp.dore = 7) as totalShekamSevom,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('ماده') and cp.dore = 8) as totalShekamchaharm,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('ماده') and cp.dore = 9) as totalShekampanjom,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('نر') and cp.dore = 1) as totalNarYek,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('نر') and cp.dore = 2) as totalnardo,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('نر') and cp.dore = 3) as totalNarse,
+   (select count(*) from c_property cp where cp.active = 1 and trim(cp.cow_sex) = trim('نر') and cp.dore = 4) as totalNarJone,
+   ((select count(*) from c_property cp where cp.dore > 5 and cp.active = 1)-(select count(*) from c_zayeman cz where cz.zayaman_date is null)) as totalAhiri,
+   (select count(*) from c_zayeman cz where cz.zayaman_date is not null and cz.zayaman_date< sysdate and cz.zayaman_date > $P{startDay}) as totalZayeman,
+   (select count(*) from c_exit cx where cx.date_exit is not null and  cx.date_exit < sysdate and cx.date_exit > $P{startDay} ) as totalExit,
+   (select count(*) from c_zayeman cz where cz.zayaman_date is null) as khoshk,
+    convertdatemiladitofarsi(sysdate)as currentDate,
+   (select cmt1.milk_total from c_milk_total cmt1 where cmt1.date_total = (select max(cmt.date_total) from c_milk_total cmt ))as tatalmilk ,
+ convertdatemiladitofarsi(t.date_total) as dateMilk,
+   t.milk_total as milkTotal
+from c_milk_total t 
+where rownum < 10]]></queryString>
+
+	<field name="TOTALDAM" class="java.math.BigDecimal"/>
+	<field name="TATALMADE" class="java.math.BigDecimal"/>
+	<field name="TOTALNAR" class="java.math.BigDecimal"/>
+	<field name="TOTALMADEYEK" class="java.math.BigDecimal"/>
+	<field name="TOTALMADEDO" class="java.math.BigDecimal"/>
+	<field name="TOTALMADESE" class="java.math.BigDecimal"/>
+	<field name="TOTALMADETELISE" class="java.math.BigDecimal"/>
+	<field name="TOTALSHEKAMDOVOM" class="java.math.BigDecimal"/>
+	<field name="TOTALSHEKAMSEVOM" class="java.math.BigDecimal"/>
+	<field name="TOTALSHEKAMCHAHARM" class="java.math.BigDecimal"/>
+	<field name="TOTALSHEKAMPANJOM" class="java.math.BigDecimal"/>
+	<field name="TOTALNARYEK" class="java.math.BigDecimal"/>
+	<field name="TOTALNARDO" class="java.math.BigDecimal"/>
+	<field name="TOTALNARSE" class="java.math.BigDecimal"/>
+	<field name="TOTALNARJONE" class="java.math.BigDecimal"/>
+	<field name="TOTALAHIRI" class="java.math.BigDecimal"/>
+	<field name="TOTALZAYEMAN" class="java.math.BigDecimal"/>
+	<field name="TOTALEXIT" class="java.math.BigDecimal"/>
+	<field name="KHOSHK" class="java.math.BigDecimal"/>
+	<field name="CURRENTDATE" class="java.lang.String"/>
+	<field name="TATALMILK" class="java.math.BigDecimal"/>
+	<field name="DATEMILK" class="java.lang.String"/>
+	<field name="MILKTOTAL" class="java.math.BigDecimal"/>
+
+		<background>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</background>
+		<title>
+			<band height="15"  isSplitAllowed="true" >
+			</band>
+		</title>
+		<pageHeader>
+			<band height="41"  isSplitAllowed="true" >
+				<staticText>
+					<reportElement
+						x="616"
+						y="9"
+						width="157"
+						height="18"
+						key="staticText-10"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font fontName="SansSerif" size="12" isBold="true" isItalic="false"/>
+					</textElement>
+				<text><![CDATA[نام گزارش : موجودی روزانه دامداری]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="93"
+						y="18"
+						width="82"
+						height="15"
+						key="staticText-22"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[تاریخ گزارش گیری:]]></text>
+				</staticText>
+			</band>
+		</pageHeader>
+		<columnHeader>
+			<band height="84"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="8"
+						y="-5"
+						width="72"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$F{CURRENTDATE}]]></textFieldExpression>
+				</textField>
+				<rectangle>
+					<reportElement
+						x="2"
+						y="27"
+						width="779"
+						height="26"
+						key="rectangle-1"/>
+					<graphicElement stretchType="NoStretch"/>
+				</rectangle>
+				<staticText>
+					<reportElement
+						x="595"
+						y="38"
+						width="0"
+						height="0"
+						key="staticText-5"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font/>
+					</textElement>
+				<text><![CDATA[Static Text]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="734"
+						y="32"
+						width="45"
+						height="17"
+						key="staticText-11"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[تعداد کل دام]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="542"
+						y="27"
+						width="56"
+						height="11"
+						key="staticText-12"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[تعداد ماده]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="90"
+						y="27"
+						width="0"
+						height="26"
+						key="line-17"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="411"
+						y="27"
+						width="0"
+						height="26"
+						key="line-19"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="48"
+						y="33"
+						width="40"
+						height="15"
+						key="staticText-19"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[تعداد خروج]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="733"
+						y="27"
+						width="0"
+						height="26"
+						key="line-21"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="202"
+						y="27"
+						width="0"
+						height="26"
+						key="line-23"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="136"
+						y="32"
+						width="66"
+						height="15"
+						key="staticText-20"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[تعداد دام های خشک]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="93"
+						y="33"
+						width="40"
+						height="15"
+						key="staticText-21"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[تعداد زایمان]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="137"
+						y="27"
+						width="0"
+						height="26"
+						key="line-24"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="411"
+						y="38"
+						width="322"
+						height="1"
+						key="line-26"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="656"
+						y="40"
+						width="39"
+						height="11"
+						key="staticText-23"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[سه تا شش ماهگی]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="572"
+						y="39"
+						width="34"
+						height="11"
+						key="staticText-24"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[تلیسه]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="608"
+						y="39"
+						width="45"
+						height="11"
+						key="staticText-25"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[شش تا نه ماهگی]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="698"
+						y="40"
+						width="34"
+						height="11"
+						key="staticText-26"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[سه ماهگی]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="607"
+						y="38"
+						width="0"
+						height="15"
+						key="line-27"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="697"
+						y="38"
+						width="0"
+						height="15"
+						key="line-28"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="656"
+						y="38"
+						width="0"
+						height="15"
+						key="line-29"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="376"
+						y="40"
+						width="34"
+						height="11"
+						key="staticText-27"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[سه ماهگی]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="327"
+						y="26"
+						width="34"
+						height="11"
+						key="staticText-28"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[تعداد نر]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="289"
+						y="39"
+						width="45"
+						height="11"
+						key="staticText-29"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[شش تا نه ماهگی]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="265"
+						y="40"
+						width="20"
+						height="11"
+						key="staticText-30"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[جونه]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="335"
+						y="38"
+						width="0"
+						height="15"
+						key="line-31"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="376"
+						y="38"
+						width="0"
+						height="15"
+						key="line-32"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="336"
+						y="39"
+						width="39"
+						height="11"
+						key="staticText-31"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[سه تا شش ماهگی]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="241"
+						y="38"
+						width="171"
+						height="1"
+						key="line-33"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="240"
+						y="27"
+						width="0"
+						height="26"
+						key="line-34"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="538"
+						y="39"
+						width="34"
+						height="11"
+						key="staticText-33"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[شکم اول]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="503"
+						y="39"
+						width="34"
+						height="11"
+						key="staticText-34"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[شکم دوم]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="469"
+						y="39"
+						width="34"
+						height="11"
+						key="staticText-35"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[شکم سوم]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="434"
+						y="39"
+						width="34"
+						height="11"
+						key="staticText-36"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[شکم چهارم]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="412"
+						y="40"
+						width="22"
+						height="11"
+						key="staticText-37"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[کل]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="434"
+						y="38"
+						width="0"
+						height="15"
+						key="line-36"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="467"
+						y="38"
+						width="0"
+						height="15"
+						key="line-37"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="502"
+						y="38"
+						width="0"
+						height="15"
+						key="line-38"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="538"
+						y="38"
+						width="0"
+						height="15"
+						key="line-39"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="572"
+						y="37"
+						width="0"
+						height="15"
+						key="line-40"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="286"
+						y="38"
+						width="0"
+						height="15"
+						key="line-55"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="265"
+						y="38"
+						width="0"
+						height="15"
+						key="line-57"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="241"
+						y="39"
+						width="24"
+						height="11"
+						key="staticText-38"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" size="8" isBold="true"/>
+					</textElement>
+				<text><![CDATA[کل]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						x="46"
+						y="27"
+						width="0"
+						height="26"
+						key="line-58"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="202"
+						y="32"
+						width="37"
+						height="15"
+						key="staticText-40"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[دام شیری]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="3"
+						y="33"
+						width="40"
+						height="15"
+						key="staticText-41"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[کل شیر]]></text>
+				</staticText>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="2"
+						y="53"
+						width="0"
+						height="30"
+						key="line-7"
+						positionType="FixRelativeToBottom"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						mode="Opaque"
+						x="2"
+						y="83"
+						width="779"
+						height="0"
+						key="line-8"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="780"
+						y="52"
+						width="0"
+						height="31"
+						key="line-9"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="733"
+						y="53"
+						width="0"
+						height="30"
+						key="line-15"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="90"
+						y="53"
+						width="0"
+						height="30"
+						key="line-18"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="411"
+						y="53"
+						width="0"
+						height="30"
+						key="line-20"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="202"
+						y="53"
+						width="0"
+						height="30"
+						key="line-22"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="137"
+						y="53"
+						width="0"
+						height="30"
+						key="line-25"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="502"
+						y="53"
+						width="0"
+						height="30"
+						key="line-41"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="538"
+						y="53"
+						width="0"
+						height="30"
+						key="line-42"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="572"
+						y="53"
+						width="0"
+						height="30"
+						key="line-43"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="607"
+						y="53"
+						width="0"
+						height="30"
+						key="line-44"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="656"
+						y="53"
+						width="0"
+						height="30"
+						key="line-45"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="697"
+						y="53"
+						width="0"
+						height="30"
+						key="line-46"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="434"
+						y="53"
+						width="0"
+						height="30"
+						key="line-47"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="467"
+						y="53"
+						width="0"
+						height="30"
+						key="line-48"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="335"
+						y="54"
+						width="0"
+						height="30"
+						key="line-50"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="376"
+						y="54"
+						width="0"
+						height="30"
+						key="line-51"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="240"
+						y="53"
+						width="0"
+						height="30"
+						key="line-53"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="286"
+						y="53"
+						width="0"
+						height="30"
+						key="line-54"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="265"
+						y="53"
+						width="0"
+						height="30"
+						key="line-56"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<line direction="TopDown">
+					<reportElement
+						x="46"
+						y="53"
+						width="0"
+						height="30"
+						key="line-59"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="735"
+						y="56"
+						width="44"
+						height="22"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALDAM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="411"
+						y="58"
+						width="23"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TATALMADE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="241"
+						y="59"
+						width="24"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALNAR}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="698"
+						y="58"
+						width="34"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALMADEYEK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="656"
+						y="58"
+						width="39"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALMADEDO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="608"
+						y="58"
+						width="48"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALMADESE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="576"
+						y="58"
+						width="30"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALMADETELISE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="540"
+						y="58"
+						width="32"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALSHEKAMDOVOM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="503"
+						y="58"
+						width="35"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALSHEKAMSEVOM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="469"
+						y="58"
+						width="34"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALSHEKAMCHAHARM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="434"
+						y="58"
+						width="35"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALSHEKAMPANJOM}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="376"
+						y="59"
+						width="35"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALNARYEK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="334"
+						y="59"
+						width="42"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALNARDO}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="288"
+						y="59"
+						width="45"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALNARSE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="266"
+						y="59"
+						width="20"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALNARJONE}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="140"
+						y="59"
+						width="61"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{KHOSHK}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="203"
+						y="59"
+						width="38"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALAHIRI}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="48"
+						y="60"
+						width="40"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALEXIT}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="93"
+						y="60"
+						width="43"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TOTALZAYEMAN}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="6"
+						y="60"
+						width="37"
+						height="18"
+						key="textField"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{TATALMILK}]]></textFieldExpression>
+				</textField>
+			</band>
+		</columnHeader>
+		<detail>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</detail>
+		<columnFooter>
+			<band height="203"  isSplitAllowed="true" >
+				<stackedBar3DChart>
+					<chart  hyperlinkType="Reference"  hyperlinkTarget="Blank" >
+					<reportElement
+						x="23"
+						y="0"
+						width="672"
+						height="198"
+						key="element-1"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+						<chartLegend textColor="#000000" backgroundColor="#FFFFFF" >
+					</chartLegend>
+					</chart>
+					<categoryDataset>
+						<dataset resetType="None" >
+						</dataset>
+						<categorySeries>
+							<seriesExpression><![CDATA[$F{DATEMILK}]]></seriesExpression>
+							<categoryExpression><![CDATA[$F{DATEMILK}]]></categoryExpression>
+							<valueExpression><![CDATA[$F{MILKTOTAL}]]></valueExpression>
+							<labelExpression><![CDATA["Test"]]></labelExpression>
+				<itemHyperlink >
+				</itemHyperlink>
+						</categorySeries>
+					</categoryDataset>
+					<bar3DPlot >
+						<plot />
+						<categoryAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</categoryAxisFormat>
+						<valueAxisFormat>
+							<axisFormat >
+							</axisFormat>
+						</valueAxisFormat>
+					</bar3DPlot>
+				</stackedBar3DChart>
+			</band>
+		</columnFooter>
+		<pageFooter>
+			<band height="0"  isSplitAllowed="true" >
+			</band>
+		</pageFooter>
+		<lastPageFooter>
+			<band height="38"  isSplitAllowed="true" >
+				<line direction="TopDown">
+					<reportElement
+						x="0"
+						y="5"
+						width="781"
+						height="1"
+						key="line-16"/>
+					<graphicElement stretchType="NoStretch"/>
+				</line>
+				<staticText>
+					<reportElement
+						x="684"
+						y="7"
+						width="94"
+						height="17"
+						key="staticText-9"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement textAlignment="Right">
+						<font isBold="true" isItalic="false"/>
+					</textElement>
+				<text><![CDATA[آدرس دامداری: فشاپویه]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="0"
+						y="11"
+						width="131"
+						height="21"
+						key="staticText-17"/>
+					<box topBorder="None" topBorderColor="#000000" leftBorder="None" leftBorderColor="#000000" rightBorder="None" rightBorderColor="#000000" bottomBorder="None" bottomBorderColor="#000000"/>
+					<textElement>
+						<font pdfFontName="Helvetica-Bold" isBold="true"/>
+					</textElement>
+				<text><![CDATA[گروه مهندسی چشم سوم]]></text>
+				</staticText>
+			</band>
+		</lastPageFooter>
+		<summary>
+			<band height="1"  isSplitAllowed="true" >
+			</band>
+		</summary>
+</jasperReport>
